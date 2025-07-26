@@ -21,12 +21,16 @@ bool Renderer::init() {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         throw std::runtime_error("Failed to initialize GLAD");
     }
+    glViewport(0, 0, 1280, 720);
 
     glfwSetWindowCloseCallback(m_window.get(), [](GLFWwindow* window) {
         glfwSetWindowShouldClose(window, true);
     });
 
-    glViewport(0, 0, 1280, 720);
+    glfwSetWindowSizeCallback(m_window.get(), [](GLFWwindow* window, int width, int height) {
+        glViewport(0, 0, width, height);
+    });
+
 #else
     if (!gladLoadGLES2Loader((GLADloadproc)eglGetProcAddress)) {
         LOGI("Failed to initialize GLAD");
