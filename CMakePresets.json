@@ -1,4 +1,4 @@
-﻿{
+{
   "version": 3,
   "configurePresets": [
     {
@@ -139,6 +139,7 @@
         "lhs": "${hostSystemName}",
         "rhs": "Windows"
       }
+
     },
     {
       "name": "android-x86_64-debug",
@@ -169,6 +170,7 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "installDir": "${sourceDir}/out/install/${presetName}",
+
       "cacheVariables": {
         "CMAKE_SYSTEM_NAME": "Android",
         "CMAKE_SYSTEM_VERSION": "24",
@@ -209,5 +211,5 @@
         "rhs": "Windows"
       }
     }
-  ]
+  ],
 }

@@ -1,11 +1,9 @@
 #include "application.hpp"
 
-#if defined(_WIN32)
-#include <Windows.h>
-#endif
-
 #if defined(__ANDROID__)
 #include <jni.h>
+#else
+#include <Windows.h>
 #endif
 
 #include "log.hpp"
