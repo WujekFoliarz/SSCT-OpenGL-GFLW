@@ -1,5 +1,6 @@
 #include "renderer.hpp"  
 #include <stdexcept>
+#include <glad/glad_egl.h>
  
 bool Renderer::init() {
 #if !defined(__ANDROID__)  
@@ -30,12 +31,13 @@ bool Renderer::init() {
     glfwSetWindowSizeCallback(m_window.get(), [](GLFWwindow* window, int width, int height) {
         glViewport(0, 0, width, height);
     });
-
+    
 #else
     if (!gladLoadGLES2Loader((GLADloadproc)eglGetProcAddress)) {
         LOGI("Failed to initialize GLAD");
     }
     EGLDisplay display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+    
 #endif
 
     return true;

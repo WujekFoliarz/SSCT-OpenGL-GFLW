@@ -15,6 +15,7 @@ bool Application::update() {
 	m_renderer.draw();
 
 	glfwPollEvents();
+	m_input.readGlfwInput(m_renderer.getWindow());
 	glfwSwapBuffers(m_renderer.getWindow());
 #endif
 
@@ -28,4 +29,8 @@ bool Application::cleanup() {
 
 Renderer* Application::getRenderer() {
 	return &m_renderer;
+}
+
+Input* Application::getInput() {
+	return &m_input;
 }

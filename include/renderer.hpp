@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <glad/glad.h>
+#include "log.hpp"
 
 #if !defined(__ANDROID__)
 #include <GLFW/glfw3.h>

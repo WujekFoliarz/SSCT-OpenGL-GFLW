@@ -54,6 +54,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_supersimple_MainActivity_nativeOnTouch(JNIEnv*, jint action, jfloat x, jfloat y) {
 	LOGI("Touch event at (%f, %f)", x, y);
+	application.getInput()->readAndroidInput(action, x, y);
 }
 
 #endif

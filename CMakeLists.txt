@@ -25,7 +25,10 @@ if(ANDROID)
 
     find_library(log-lib log)
     find_library(android-lib log)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${log-lib} ${android-lib} glad)
+    find_library(egl-lib EGL)
+    find_library(glesv2-lib GLESv2)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${log-lib} ${android-lib} ${egl-lib} ${glesv2-lib} glad)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC __ANDROID__=1)
 else()
 
     if(COMPILE_TO_DLL)

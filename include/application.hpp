@@ -2,10 +2,12 @@
 #define APPLICATION_HPP
 
 #include "renderer.hpp"
+#include "input.hpp"
 
 class Application {
 private:
 	Renderer m_renderer;
+	Input m_input;
 public:
 	enum class Platform {
 		Windows,
@@ -31,6 +33,7 @@ public:
 	bool update();
 	bool cleanup();
 	Renderer* getRenderer();
+	Input* getInput();
 };
 
 
