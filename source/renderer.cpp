@@ -50,7 +50,8 @@ GLFWwindow* Renderer::getWindow() const {
 #endif
 
 void Renderer::compileShaders() {
-
+    // Implement shader compilation here
+    // You not me
 }
 
 void Renderer::draw() {

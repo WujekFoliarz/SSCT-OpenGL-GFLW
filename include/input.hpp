@@ -22,7 +22,6 @@ struct CursorPos {
 	double y = 0;
 };
 
-
 class Input {
 private:
 	CursorPos m_primaryCursor = {};
