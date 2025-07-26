@@ -8,8 +8,6 @@ bool Application::init() {
 }
 
 bool Application::update() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 #if !defined(__ANDROID__)
 	if (glfwWindowShouldClose(m_renderer.getWindow()))
 		return false;
