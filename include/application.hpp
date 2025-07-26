@@ -1,7 +1,11 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
+#include "renderer.hpp"
+
 class Application {
+private:
+	Renderer m_renderer;
 public:
 	enum class Platform {
 		Windows,
@@ -11,18 +15,22 @@ public:
 	};
 
 	inline Platform getPlatform() {
-	#if defined(_WIN32)
-		return Platform::Windows;
-	#elif defined(__linux__)
+		
+	#if defined(__linux__)
 		return Platform::Linux;
 	#elif defined(__ANDROID__)
 		return Platform::Android;
+	#elif defined(_WIN32)
+		return Platform::Windows;
 	#else
 		return Platform::Unknown;
 	#endif
 	}
 
-	bool run();
+	bool init();
+	bool update();
+	bool cleanup();
+	Renderer* getRenderer();
 };
 
 

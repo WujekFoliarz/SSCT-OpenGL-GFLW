@@ -8,42 +8,52 @@
 #include <jni.h>
 #endif
 
+#include "log.hpp"
+
+static Application application;
+
+bool desktopMain() {
+	if (!application.init()) {
+		return false;
+	}
+
+	while (application.update()) {}
+
+	application.cleanup();
+	return true;
+}
+
 // Windows-specific code (Standard Executable)
-#if (defined(_WIN32) && !defined(COMPILE_TO_DLL)) || defined(__linux__)
+#if (!defined(__ANDROID__) && !defined(COMPILE_TO_DLL))
 
 int main(int argc, char* argv[]) {
-	Application application;
-	application.run();
+	return desktopMain() ? 0 : 1;
 }
-
-// Windows-specific code (DLL)
-#elif defined(_WIN32) && defined(COMPILE_TO_DLL)
-
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
-	switch (ul_reason_for_call) {
-		case DLL_PROCESS_ATTACH:
-			// DLL loaded into process
-			break;
-		case DLL_THREAD_ATTACH:
-			// New thread started
-			break;
-		case DLL_THREAD_DETACH:
-			// Thread exiting
-			break;
-		case DLL_PROCESS_DETACH:
-			// DLL unloading
-			break;
-	}
-	return TRUE;
-}
-
 // Android-specific code
-#elif defined(__ANDROID__)
+#else
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_example_appname_MainActivity_callNativeMain(JNIEnv* env, jobject obj) {
-	Application application;
-	application.run();
+JNIEXPORT void JNICALL Java_com_example_supersimple_MainActivity_00024Renderer_nativeOnSurfaceCreated(JNIEnv* env, jobject obj) {
+	application.init();
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_supersimple_MainActivity_00024Renderer_nativeOnSurfaceChanged(JNIEnv*, jobject, jint width, jint height) {
+	glViewport(0, 0, width, height);
+	application.getRenderer()->compileShaders();
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_supersimple_MainActivity_00024Renderer_nativeOnDrawFrame(JNIEnv*, jobject) {
+	application.update();
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_supersimple_MainActivity_nativeOnTouch(JNIEnv*, jint action, jfloat x, jfloat y) {
+	LOGI("Touch event at (%f, %f)", x, y);
 }
 
 #endif
