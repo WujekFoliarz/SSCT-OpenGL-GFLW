@@ -14,6 +14,8 @@ bool Application::update() {
 	if (glfwWindowShouldClose(m_renderer.getWindow()))
 		return false;
 
+	m_renderer.draw();
+
 	glfwPollEvents();
 	glfwSwapBuffers(m_renderer.getWindow());
 #endif

@@ -50,3 +50,8 @@ GLFWwindow* Renderer::getWindow() const {
 void Renderer::compileShaders() {
 
 }
+
+void Renderer::draw() {
+    glClear(GL_CLEAR);
+    glClearColor(0, 1, 0, 1);
+}
