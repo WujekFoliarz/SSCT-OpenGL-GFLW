@@ -29,8 +29,22 @@ if(ANDROID)
     find_library(glesv2-lib GLESv2)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${log-lib} ${android-lib} ${egl-lib} ${glesv2-lib} glad)
     target_compile_definitions(${PROJECT_NAME} PUBLIC __ANDROID__=1)
-else()
 
+    # Define output path to Android Studio's jniLibs folder for the current ABI
+    set(JNILIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/androidStudioApplication/app/src/main/jniLibs/${ANDROID_ABI}")
+
+    # Make sure the target output directory exists
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${JNILIBS_DIR}"
+    )
+
+    # Copy the generated .so to the jniLibs folder for the current ABI
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+            $<TARGET_FILE:${PROJECT_NAME}>
+            "${JNILIBS_DIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}>"
+    )
+else()
     if(COMPILE_TO_DLL)
         add_library(${PROJECT_NAME} SHARED ${MY_SOURCES})
         target_compile_definitions(${PROJECT_NAME} PUBLIC COMPILE_TO_DLL=1)

@@ -33,28 +33,28 @@ int main(int argc, char* argv[]) {
 #else
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_example_supersimple_MainActivity_00024Renderer_nativeOnSurfaceCreated(JNIEnv* env, jobject obj) {
+JNIEXPORT void JNICALL 
+Java_com_example_androidstudioapplication_MainActivity_00024Renderer_nativeOnSurfaceCreated(JNIEnv* env, jobject obj) {
 	application.init();
 }
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_supersimple_MainActivity_00024Renderer_nativeOnSurfaceChanged(JNIEnv*, jobject, jint width, jint height) {
+Java_com_example_androidstudioapplication_MainActivity_00024Renderer_nativeOnSurfaceChanged(JNIEnv*, jobject, jint width, jint height) {
 	glViewport(0, 0, width, height);
 	application.getRenderer()->compileShaders();
 }
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_supersimple_MainActivity_00024Renderer_nativeOnDrawFrame(JNIEnv*, jobject) {
+Java_com_example_androidstudioapplication_MainActivity_00024Renderer_nativeOnDrawFrame(JNIEnv*, jobject) {
 	application.update();
 }
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_supersimple_MainActivity_nativeOnTouch(JNIEnv*, jint action, jfloat x, jfloat y) {
-	LOGI("Touch event at (%f, %f)", x, y);
-	application.getInput()->readAndroidInput(action, x, y);
+Java_com_example_androidstudioapplication_MainActivity_nativeOnTouch(JNIEnv*, jobject, jint action, jint index, jfloat x, jfloat y) {
+	application.getInput()->readAndroidInput(action, index, x, y);
 }
 
 #endif

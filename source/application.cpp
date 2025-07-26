@@ -11,14 +11,15 @@ bool Application::update() {
 #if !defined(__ANDROID__)
 	if (glfwWindowShouldClose(m_renderer.getWindow()))
 		return false;
+#endif
 
 	m_renderer.draw();
 
+#if !defined(__ANDROID__)
 	glfwPollEvents();
 	m_input.readGlfwInput(m_renderer.getWindow());
 	glfwSwapBuffers(m_renderer.getWindow());
 #endif
-
 	return true;
 }
 
