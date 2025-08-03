@@ -49,11 +49,6 @@ GLFWwindow* Renderer::getWindow() const {
 }
 #endif
 
-void Renderer::compileShaders() {
-    // Implement shader compilation here
-    // You not me
-}
-
 void Renderer::draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0, 1, 0, 1);

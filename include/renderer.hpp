@@ -24,7 +24,6 @@ private:
 #endif
 public:
     bool init();
-    void compileShaders();
     void draw();
 
 #if !defined(__ANDROID__)
