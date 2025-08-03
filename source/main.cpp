@@ -40,7 +40,6 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_androidstudioapplication_MainActivity_00024Renderer_nativeOnSurfaceChanged(JNIEnv*, jobject, jint width, jint height) {
 	glViewport(0, 0, width, height);
-	application.getRenderer()->compileShaders();
 }
 
 extern "C"

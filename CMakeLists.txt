@@ -14,7 +14,8 @@ endif()
 project (ProjectTemplate)
 file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
 
-set(COMPILE_TO_DLL OFF CACHE BOOL "Compile to dll" FORCE) # Delete the out folder when you change this
+set(PRODUCTION_BUILD ON CACHE BOOL "Make this a production build" FORCE)
+set(COMPILE_TO_DLL OFF CACHE BOOL "Compile to dll" FORCE)
 
 # Cross platform libraries
 add_subdirectory(thirdparty/glad)
@@ -24,9 +25,10 @@ if(ANDROID)
     add_library(${PROJECT_NAME} SHARED ${MY_SOURCES})
 
     find_library(log-lib log)
-    find_library(android-lib log)
+    find_library(android-lib android)
     find_library(egl-lib EGL)
     find_library(glesv2-lib GLESv2)
+
     target_link_libraries(${PROJECT_NAME} PRIVATE ${log-lib} ${android-lib} ${egl-lib} ${glesv2-lib} glad)
     target_compile_definitions(${PROJECT_NAME} PUBLIC __ANDROID__=1)
 
@@ -58,6 +60,28 @@ else()
 endif()
 
 add_compile_definitions(PROJECT_NAME="${PROJECT_NAME}")
+
+if(PRODUCTION_BUILD)
+    if(ANDROID)
+        target_compile_definitions("${PROJECT_NAME}" PUBLIC RESOURCES_PATH="")
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources ${CMAKE_CURRENT_SOURCE_DIR}/androidStudioApplication/app/src/main/assets/)
+    else()
+        target_compile_definitions("${PROJECT_NAME}" PUBLIC RESOURCES_PATH="./resources/") 
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources)
+    endif()
+
+	target_compile_definitions("${PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=1) 
+	target_compile_definitions("${PROJECT_NAME}" PUBLIC DEVELOPMENT_BUILD=0) 
+else()
+    if(ANDROID)
+        target_compile_definitions("${PROJECT_NAME}" PUBLIC RESOURCES_PATH="") 
+    else()
+        target_compile_definitions("${PROJECT_NAME}" PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
+    endif()
+
+	target_compile_definitions("${PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=0) 
+	target_compile_definitions("${PROJECT_NAME}" PUBLIC DEVELOPMENT_BUILD=1) 
+endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(${PROJECT_NAME}
